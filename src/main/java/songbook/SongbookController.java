@@ -238,10 +238,8 @@ public class SongbookController {
 
     public void saveToPdf(ActionEvent actionEvent) {
         try {
-            getDataStorage().saveToPdf();
             Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Data saved");
-            alert.setContentText("The songbook data has been successfully exported to the PDF file!");
+            getDataStorage().saveToPdf(alert);
             alert.showAndWait();
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.ERROR);
