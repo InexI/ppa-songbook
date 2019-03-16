@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.Test;
+import songbook.data.Song;
 
 /**
  * Created by pwilkin on 14-Mar-19.
@@ -42,8 +43,43 @@ public class DatabaseTest {
         }
     }
 
+    @Test
+    public void testCreateSongTable() {
+        Song song = new Song();
+        song.setTitle("songTitle");
+        song.setLyrics("songLyrics");
+
+        Song song2 = new Song();
+        song2.setTitle("songTitle2");
+        song2.setLyrics("songLyrics2");
+
+        try (Connection c = DriverManager.getConnection("jdbc:hsqldb:mem:mymemdb", "SA", "")) {
+            c.createStatement().execute("CREATE TABLE SONG (ID INT IDENTITY PRIMARY KEY, TITLE VARCHAR(200), LYRICS VARCHAR (200))");
+
+            try (PreparedStatement ps = c.prepareStatement("INSERT INTO SONG (TITLE,LYRICS) VALUES (?,?)")) {
+                ps.setString(1,  song.getTitle());
+                ps.setString(2,  song.getLyrics());
+                ps.execute();
+            }
+
+            try (PreparedStatement ps = c.prepareStatement("SELECT * FROM SONG where id = ?")) {
+                ps.setInt(1, 0);
+                try (ResultSet rs = ps.executeQuery()) {
+                    rs.next();
+                    System.out.println(rs.getString("TITLE"));
+                    System.out.println(rs.getString("LYRICS"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public void testTest(){
-        
+
     }
 
     @Test
