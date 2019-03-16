@@ -5,8 +5,17 @@ package songbook.data;
  */
 public class Song {
 
+    protected Integer id;
     protected String title;
     protected String lyrics;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

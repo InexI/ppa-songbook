@@ -7,8 +7,17 @@ import java.util.List;
  */
 public class Artist {
 
+    protected Integer id;
     protected String name;
     protected List<Album> albums;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
