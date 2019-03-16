@@ -42,6 +42,10 @@ public class DatabaseTest {
         }
     }
 
+    public void testTest(){
+        
+    }
+
     @Test
     public void testTransaction() {
         try (Connection c = DriverManager.getConnection("jdbc:hsqldb:mem:mymemdb", "SA", "")) {
