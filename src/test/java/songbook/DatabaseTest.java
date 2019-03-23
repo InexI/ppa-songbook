@@ -1,10 +1,8 @@
 package songbook;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import songbook.data.Song;
@@ -53,22 +51,32 @@ public class DatabaseTest {
         song2.setTitle("songTitle2");
         song2.setLyrics("songLyrics2");
 
+        List<Song> songs = new ArrayList<>();
+        songs.add(song);
+        songs.add(song2);
+
         try (Connection c = DriverManager.getConnection("jdbc:hsqldb:mem:mymemdb", "SA", "")) {
             c.createStatement().execute("CREATE TABLE SONG (ID INT IDENTITY PRIMARY KEY, TITLE VARCHAR(200), LYRICS VARCHAR (200))");
 
             try (PreparedStatement ps = c.prepareStatement("INSERT INTO SONG (TITLE,LYRICS) VALUES (?,?)")) {
-                ps.setString(1,  song.getTitle());
-                ps.setString(2,  song.getLyrics());
-                ps.execute();
+                for(Song x : songs) {
+                    ps.setString(1, x.getTitle());
+                    ps.setString(2, x.getLyrics());
+                    ps.execute();
+                }
             }
 
             try (PreparedStatement ps = c.prepareStatement("SELECT * FROM SONG where id = ?")) {
-                ps.setInt(1, 0);
-                try (ResultSet rs = ps.executeQuery()) {
-                    rs.next();
-                    System.out.println(rs.getString("TITLE"));
-                    System.out.println(rs.getString("LYRICS"));
+
+                for (int i = 0; i<songs.size(); i++){
+                    ps.setInt(1,i);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        rs.next();
+                        System.out.println(rs.getString("TITLE"));
+                        System.out.println(rs.getString("LYRICS"));
+                    }
                 }
+
             }
 
         } catch (SQLException e) {
