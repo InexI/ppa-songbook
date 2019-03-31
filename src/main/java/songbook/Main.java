@@ -10,6 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        DatabaseConnection.getInstance().initializeDatabaseIfNeeded();
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Load songbook");
         primaryStage.setScene(new Scene(root, 300, 275));

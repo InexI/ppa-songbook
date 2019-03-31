@@ -1,6 +1,9 @@
 package songbook.data;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import songbook.dao.AlbumDAO;
 
 /**
  * Created by pwilkin on 13-Dec-18.
@@ -28,6 +31,13 @@ public class Artist {
     }
 
     public List<Album> getAlbums() {
+        if (albums == null) {
+            if (id == null) {
+                albums = new ArrayList<>();
+            } else {
+                albums = AlbumDAO.getInstance().loadAlbumsByArtist(id);
+            }
+        }
         return albums;
     }
 

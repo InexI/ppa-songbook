@@ -1,6 +1,9 @@
 package songbook.data;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import songbook.dao.SongDAO;
 
 /**
  * Created by pwilkin on 13-Dec-18.
@@ -20,6 +23,13 @@ public class Album {
     }
 
     public List<Song> getSongs() {
+        if (songs == null) {
+            if (id == null) {
+                songs = new ArrayList<>();
+            } else {
+                songs = SongDAO.getInstance().loadSongsByAlbum(id);
+            }
+        }
         return songs;
     }
 
